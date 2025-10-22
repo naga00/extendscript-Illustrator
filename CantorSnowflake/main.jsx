@@ -8,14 +8,14 @@
 
 
 var documentPreset = new DocumentPreset();
-documentPreset.title = "Title";
+documentPreset.title = "Sketch";
 documentPreset.width = 1000;
 documentPreset.height = 1000;
 documentPreset.colorMode = DocumentColorSpace.RGB;
 documentPreset.rasterResolution = DocumentRasterResolution.ScreenResolution;
 documentPreset.previewMode = DocumentPreviewMode.DefaultPreview;
 
-var document = app.documents.addDocument(documentPreset.colorMode, documentPreset);
+var document = new DocumentEx(false, documentPreset);
 document.defaultStroked = true;
 document.defaultFilled = true;
 document.defaultStrokeOverprint = false;
@@ -25,15 +25,20 @@ document.defaultStrokeJoin = StrokeJoin.MITERENDJOIN;
 document.defaultStrokeMiterLimit = 4;
 document.defaultStrokeWidth = 1;
 
-var palette = ColorKit.getRandomColorScheme();
+//var palette = ColorKit.getRandomColorScheme();
+var palette = ColorKit.getColorScheme("CMYKGradient");
 $.writeln("Using color scheme: " + palette.name);
-setBackgroundLayer(document, RGBColor.ofHex(palette.colors[UtilKit.randomInt(palette.colors.length - 1)]));
-
+setBackgroundLayerWithGradient(document, palette.colors, {
+    numColors: 3,
+    gradientType: GradientType.LINEAR,
+    randomAngle: false,
+    angle: 45
+});
 addLayer(document, "main");
 
 
 var THIRD_PI = Math.PI / 3;
-var MAX_DEPTH = 5;
+var MAX_DEPTH = 4;
 
 function hexagon(centerX, centerY, length) {
     var points = [];
@@ -44,8 +49,9 @@ function hexagon(centerX, centerY, length) {
         var y = centerY - Math.sin(angle) * length;
         points.push([x, y]);
     }
-    var pathItem = activeDocument.activeLayer.pathItems.add();
-    pathItem.setEntirePath(points);
+    var pathItemsEx = new PathItemsEx();
+    pathItemsEx.setEntirePath(points);
+    var pathItem = pathItemsEx.pathObj;
     pathItem.stroked = true;
     pathItem.filled = true;
     pathItem.closed = true;
@@ -55,12 +61,12 @@ function hexagon(centerX, centerY, length) {
     pathItem.strokeWidth = 0.1;
 
     ColorKit.applyGradientWithOrigin(pathItem, palette.colors, centerX, centerY, length, {
-        numColors: 2,
+        numColors: 3,
         gradientType: GradientType.LINEAR,
-        randomAngle: true
+        randomAngle: false,
+        angle: 45
     });
 }
-
 
 function cantorSnowflake(x, y, length, depth) {
     if (length < 1 || depth >= MAX_DEPTH) return;

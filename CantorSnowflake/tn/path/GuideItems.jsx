@@ -4,18 +4,19 @@
     GuideItems.prototype.guidePathItems;
 
     function GuideItems() {
+        this.guidePathItems = null;
         GuideItems.initialize();
     }
 
     GuideItems.initialize = function() {
-        guidePathItems = new GuidePathItems();
-        guidePathItems.setLocked(false);
+        this.guidePathItems = new GuidePathItems();
+        this.guidePathItems.setLocked(false);
 
         GuideItems.prototype.drawFitGuideX = function(divideX) {
             var stepX = activeDocument.width / divideX;
             for (var i = 0; i <= divideX; i++) {
                 var x = i * stepX;
-                pathItems = guidePathItems.add();
+                var pathItems = this.guidePathItems.add();
                 pathItems.setEntirePath([
                     [x, 0],
                     [x, activeDocument.height]
@@ -27,7 +28,7 @@
             var stepY = activeDocument.height / divideY;
             for (var i = 0; i <= divideY; i++) {
                 var y = i * stepY;
-                pathItems = guidePathItems.add();
+                var pathItems = this.guidePathItems.add();
                 pathItems.setEntirePath([
                     [0, y],
                     [activeDocument.width, y]
@@ -41,7 +42,7 @@
         };
 
         GuideItems.prototype.drawGuideMiddleX = function() {
-            pathItems = guidePathItems.add();
+            var pathItems = this.guidePathItems.add();
             var middleX = activeDocument.width / 2;
             pathItems.setEntirePath([
                 [middleX, 0],
@@ -50,7 +51,7 @@
         };
 
         GuideItems.prototype.drawGuideMiddleY = function() {
-            pathItems = guidePathItems.add();
+            var pathItems = this.guidePathItems.add();
             var middleY = activeDocument.height / 2;
             pathItems.setEntirePath([
                 [0, middleY],
@@ -64,7 +65,7 @@
         };
 
         GuideItems.prototype.drawGuideMarginLeft = function(w) {
-            pathItems = guidePathItems.add();
+            var pathItems = this.guidePathItems.add();
             pathItems.setEntirePath([
                 [w, 0],
                 [w, activeDocument.height]
@@ -72,7 +73,7 @@
         };
 
         GuideItems.prototype.drawGuideMarginRight = function(w) {
-            pathItems = guidePathItems.add();
+            var pathItems = this.guidePathItems.add();
             var x = activeDocument.width - w;
             pathItems.setEntirePath([
                 [x, 0],
@@ -81,7 +82,7 @@
         };
 
         GuideItems.prototype.drawGuideMarginTop = function(h) {
-            pathItems = guidePathItems.add();
+            var pathItems = this.guidePathItems.add();
             pathItems.setEntirePath([
                 [0, h],
                 [activeDocument.width, h]
@@ -89,7 +90,7 @@
         };
 
         GuideItems.prototype.drawGuideMarginBottom = function(h) {
-            pathItems = guidePathItems.add();
+            var pathItems = this.guidePathItems.add();
             var y = activeDocument.height - h;
             pathItems.setEntirePath([
                 [0, y],

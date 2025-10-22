@@ -22,7 +22,25 @@
         pathItemsEx.setDefaultStrokeColor(color);
         pathItemsEx.setDefaultFillColor(color);
         pathItemsEx.drawRect(0, doc.height, doc.width, doc.height);
-        doc.layers[0].locked = true;
+    }
+
+    function setBackgroundLayerWithGradient(doc, colors, options) {
+        options = options || {};
+        doc.views[0].zoom = 1;
+        doc.layers[0].name = "background";
+        var rect = doc.pathItems.rectangle(doc.height, 0, doc.width, doc.height);
+        var numColors = options.numColors || 2;
+        var gradientType = options.gradientType || GradientType.LINEAR;
+        var randomAngle = options.randomAngle !== undefined ? options.randomAngle : true;
+        var angle = options.angle;
+        
+        ColorKit.applyGradientWithOrigin(rect, colors, doc.width/2, doc.height/2, Math.max(doc.width, doc.height), {
+            numColors: numColors,
+            gradientType: gradientType,
+            randomAngle: randomAngle,
+            angle: angle
+        });
+        return rect;
     }
 
     function addLayer(doc, name) {
@@ -32,5 +50,6 @@
 
     $.global.DocumentEx = DocumentEx;
     $.global.setBackgroundLayer = setBackgroundLayer;
+    $.global.setBackgroundLayerWithGradient = setBackgroundLayerWithGradient;
     $.global.addLayer = addLayer;
 })();

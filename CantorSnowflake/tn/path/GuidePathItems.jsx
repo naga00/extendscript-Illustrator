@@ -6,54 +6,60 @@
     GuidePathItems.locked;
 
     function GuidePathItems() {
+        this.pathItems = null;
+        this.stroked = true;
+        this.strokeWidth = 1;
+        this.strokeColor = null;
+        this.guides = true;
+        this.locked = true;
         GuidePathItems.initialize();
-        GuidePathItems.prototype.setStroked(true);
-        GuidePathItems.prototype.setStrokeWidth(1);
+        this.setStroked(true);
+        this.setStrokeWidth(1);
         var strokeColor = new CMYKColor();
         strokeColor.cyan = 0;
         strokeColor.magenta = 0;
         strokeColor.yellow = 0;
         strokeColor.black = 0;
-        GuidePathItems.prototype.setStrokeColor(strokeColor);
-        GuidePathItems.prototype.setGuides(true);
-        GuidePathItems.prototype.setLocked(true);
+        this.setStrokeColor(strokeColor);
+        this.setGuides(true);
+        this.setLocked(true);
     }
 
     GuidePathItems.initialize = function() {
         var documentObj = app.activeDocument;
 
         GuidePathItems.prototype.add = function() {
-            pathItems = documentObj.pathItems.add();
-            pathItems.stroked = GuidePathItems.stroked;
-            pathItems.strokeWidth = GuidePathItems.strokeWidth;
-            pathItems.strokeColor = GuidePathItems.strokeColor;
-            pathItems.guides = GuidePathItems.guides;
-            pathItems.locked = GuidePathItems.locked;
-            return pathItems;
+            this.pathItems = documentObj.pathItems.add();
+            this.pathItems.stroked = this.stroked;
+            this.pathItems.strokeWidth = this.strokeWidth;
+            this.pathItems.strokeColor = this.strokeColor;
+            this.pathItems.guides = this.guides;
+            this.pathItems.locked = this.locked;
+            return this.pathItems;
         };
 
         GuidePathItems.prototype.removeAll = function() {
-            pathItems.removeAll();
+            this.pathItems.removeAll();
         }
 
         GuidePathItems.prototype.setStroked = function(stroked) {
-            GuidePathItems.stroked = stroked;
+            this.stroked = stroked;
         };
 
         GuidePathItems.prototype.setStrokeWidth = function(strokeWidth) {
-            GuidePathItems.strokeWidth = strokeWidth;
+            this.strokeWidth = strokeWidth;
         };
 
         GuidePathItems.prototype.setStrokeColor = function(strokeColor) {
-            GuidePathItems.strokeColor = strokeColor;
+            this.strokeColor = strokeColor;
         };
 
         GuidePathItems.prototype.setGuides = function(guides) {
-            GuidePathItems.guides = guides;
+            this.guides = guides;
         };
 
         GuidePathItems.prototype.setLocked = function(locked) {
-            GuidePathItems.locked = locked;
+            this.locked = locked;
         };
     };
 

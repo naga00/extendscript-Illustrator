@@ -6,6 +6,8 @@
     PathItemsEx.prototype.pathPoints;
 
     function PathItemsEx() {
+        this.pathObj = null;
+        this.pathPoints = null;
         PathItemsEx.initialize();
     }
 
@@ -180,43 +182,43 @@
         };
 
         PathItemsEx.prototype.getStroked = function() {
-            return pathObj.stroked;
+            return this.pathObj.stroked;
         };
 
         PathItemsEx.prototype.setStroked = function(value) {
-            pathObj.stroked = value;
+            this.pathObj.stroked = value;
         };
 
         PathItemsEx.prototype.getFilled = function() {
-            return pathObj.filled;
+            return this.pathObj.filled;
         };
 
         PathItemsEx.prototype.setFilled = function(value) {
-            pathObj.filled = value;
+            this.pathObj.filled = value;
         };
 
         PathItemsEx.prototype.getStrokeWidth = function() {
-            return pathObj.strokeWidth;
+            return this.pathObj.strokeWidth;
         };
 
         PathItemsEx.prototype.setStrokeWidth = function(value) {
-            pathObj.strokeWidth = value;
+            this.pathObj.strokeWidth = value;
         };
 
         PathItemsEx.prototype.getStrokeColor = function() {
-            return pathObj.strokeColor;
+            return this.pathObj.strokeColor;
         };
 
         PathItemsEx.prototype.setStrokeColor = function(color) {
-            pathObj.strokeColor = color;
+            this.pathObj.strokeColor = color;
         };
 
         PathItemsEx.prototype.getFillColor = function() {
-            return pathObj.fillColor;
+            return this.pathObj.fillColor;
         };
 
         PathItemsEx.prototype.setFillColor = function(color) {
-            pathObj.fillColor = color;
+            this.pathObj.fillColor = color;
         };
 
         PathItemsEx.prototype.setStrokeCMYKColor = function(cyan, magenta, yellow, black) {
@@ -282,23 +284,23 @@
         };
 
         PathItemsEx.prototype.setStrokeCap = function(cap) {
-            pathObj.strokeCap = cap;
+            this.pathObj.strokeCap = cap;
         };
 
         PathItemsEx.prototype.setStrokeJoin = function(join) {
-            pathObj.strokeJoin = join;
+            this.pathObj.strokeJoin = join;
         };
 
         PathItemsEx.prototype.setStrokeMiterLimit = function(miterLimit) {
-            pathObj.strokeLimit = miterLimit;
+            this.pathObj.strokeLimit = miterLimit;
         };
 
         PathItemsEx.prototype.setStrokeDashes = function(dashes) {
-            pathObj.strokeDashes = dashes;
+            this.pathObj.strokeDashes = dashes;
         };
 
         PathItemsEx.prototype.setStrokeDashOffset = function(offset) {
-            pathObj.strokeDashOffset = offset;
+            this.pathObj.strokeDashOffset = offset;
         };
 
         PathItemsEx.prototype.add = function() {
@@ -322,7 +324,7 @@
         };
 
         PathItemsEx.prototype.setOpacity = function(opacity) {
-            pathObj.opacity = opacity;
+            this.pathObj.opacity = opacity;
         };
 
         PathItemsEx.prototype.setAlpha = function(alpha) {
@@ -330,7 +332,7 @@
         };
 
         PathItemsEx.prototype.setBlendMode = function(blendMode) {
-            pathObj.blendingMode = blendMode;
+            this.pathObj.blendingMode = blendMode;
         };
 
         PathItemsEx.prototype.lineStyle = function(width, cap, join, miterLimit) {
@@ -341,8 +343,8 @@
         };
 
         PathItemsEx.prototype.setEntirePath = function(pathPoints) {
-            pathObj = activeDocument.pathItems.add();
-            pathObj.setEntirePath(pathPoints);
+            this.pathObj = activeDocument.pathItems.add();
+            this.pathObj.setEntirePath(pathPoints);
         };
 
         PathItemsEx.prototype.drawLine = function(x0, y0, x1, y1) {
@@ -351,20 +353,20 @@
         };
 
         PathItemsEx.prototype.moveTo = function(x0, y0) {
-            pathObj = activeDocument.pathItems.add();
-            pathPoints = new Array();
-            pathPoints.push([x0, y0]);
-            pathObj.setEntirePath(pathPoints);
+            this.pathObj = activeDocument.pathItems.add();
+            this.pathPoints = new Array();
+            this.pathPoints.push([x0, y0]);
+            this.pathObj.setEntirePath(this.pathPoints);
         };
 
         PathItemsEx.prototype.lineTo = function(x0, y0) {
-            pathPoints.push([x0, y0]);
-            pathObj.setEntirePath(pathPoints);
+            this.pathPoints.push([x0, y0]);
+            this.pathObj.setEntirePath(this.pathPoints);
         };
 
         PathItemsEx.prototype.moveCurveTo = function(x0, y0, pointType) {
-            pathObj = activeDocument.pathItems.add();
-            nPathObj = pathObj.pathPoints.add();
+            this.pathObj = activeDocument.pathItems.add();
+            nPathObj = this.pathObj.pathPoints.add();
             nPathObj.anchor = [x0, y0];
             nPathObj.leftDirection = [x0, y0];
             nPathObj.rightDirection = [x0, y0];
@@ -388,8 +390,8 @@
         };
 
         PathItemsEx.prototype.curveMoveTo3 = function(x0, y0, x1, y1, x2, y2, pointType) {
-            pathObj = activeDocument.pathItems.add();
-            nPathObj = pathObj.pathPoints.add();
+            this.pathObj = activeDocument.pathItems.add();
+            nPathObj = this.pathObj.pathPoints.add();
             nPathObj.anchor = [x0, y0];
             nPathObj.leftDirection = [x1, y1];
             nPathObj.rightDirection = [x2, y2];
@@ -405,7 +407,7 @@
         };
 
         PathItemsEx.prototype.drawDot = function(x, y, reversed) {
-            pathObj = activeDocument.pathItems.rectangle(y, x, 1, 1, reversed);
+            this.pathObj = activeDocument.pathItems.rectangle(y, x, 1, 1, reversed);
         };
 
         PathItemsEx.prototype.drawRect = function(x, y, width, height, type, reversed) {
@@ -413,7 +415,7 @@
                 x = x - width / 2;
                 y = y + height / 2;
             }
-            pathObj = activeDocument.pathItems.rectangle(y, x, width, height, reversed);
+            this.pathObj = activeDocument.pathItems.rectangle(y, x, width, height, reversed);
         };
 
         PathItemsEx.prototype.drawRoundRect = function(x, y, width, height, horizontalRadius, verticalRadius, type, reversed) {
@@ -421,7 +423,7 @@
                 x = x - width / 2;
                 y = y + height / 2;
             }
-            pathObj = activeDocument.pathItems.roundedRectangle(x, y, width, height, horizontalRadius, verticalRadius, reversed);
+            this.pathObj = activeDocument.pathItems.roundedRectangle(x, y, width, height, horizontalRadius, verticalRadius, reversed);
         };
 
         PathItemsEx.prototype.drawCircle = function(x, y, radius, type, reversed, inscribed) {
@@ -429,7 +431,7 @@
                 x = x - radius / 2;
                 y = y + radius / 2;
             }
-            pathObj = activeDocument.pathItems.ellipse(y, x, radius, radius, reversed, inscribed);
+            this.pathObj = activeDocument.pathItems.ellipse(y, x, radius, radius, reversed, inscribed);
         };
 
         PathItemsEx.prototype.drawEllipse = function(x, y, width, height, type, reversed, inscribed) {
@@ -437,15 +439,15 @@
                 x = x - width / 2;
                 y = y + height / 2;
             }
-            pathObj = activeDocument.pathItems.ellipse(y, x, width, height, reversed, inscribed);
+            this.pathObj = activeDocument.pathItems.ellipse(y, x, width, height, reversed, inscribed);
         };
 
         PathItemsEx.prototype.drawRegularPolygon = function(centerX, centerY, radius, sides, reversed) {
-            pathObj = activeDocument.pathItems.polygon(centerX, centerY, radius, sides, reversed);
+            this.pathObj = activeDocument.pathItems.polygon(centerX, centerY, radius, sides, reversed);
         };
 
         PathItemsEx.prototype.drawStar = function(centerX, centerY, radius, innerRadius, points, reversed) {
-            pathObj = activeDocument.pathItems.star(centerX, centerY, radius, innerRadius, points, reversed)
+            this.pathObj = activeDocument.pathItems.star(centerX, centerY, radius, innerRadius, points, reversed)
         };
 
         PathItemsEx.prototype.drawTriangle = function(x0, y0, x1, y1, x2, y2) {
@@ -590,13 +592,13 @@
         };
 
         PathItemsEx.prototype.drawGuideLine = function(x0, y0, x1, y1, strokeWidth, strokeColor, locked) {
-            pathObj = activeDocument.pathItems.add();
-            pathObj.setEntirePath([
+            this.pathObj = activeDocument.pathItems.add();
+            this.pathObj.setEntirePath([
                 [x0, y0],
                 [x1, y1]
             ]);
-            pathObj.stroked = true;
-            pathObj.strokeWidth = (strokeWidth != null) ? strokeWidth : 1;
+            this.pathObj.stroked = true;
+            this.pathObj.strokeWidth = (strokeWidth != null) ? strokeWidth : 1;
             if (strokeColor == null) {
                 strokeColor = new CMYKColor();
                 strokeColor.cyan = 0;
@@ -605,8 +607,8 @@
                 strokeColor.black = 0;
             }
             option.strokeColor = strokeColor;
-            pathObj.guides = true;
-            pathObj.locked = true;
+            this.pathObj.guides = true;
+            this.pathObj.locked = true;
         };
     };
 
