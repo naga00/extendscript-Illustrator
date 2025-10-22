@@ -26,7 +26,7 @@ document.defaultStrokeMiterLimit = 4;
 document.defaultStrokeWidth = 1;
 
 //var palette = ColorKit.getRandomColorScheme();
-var palette = ColorKit.getColorScheme("CMYKGradient");
+var palette = ColorKit.getColorScheme("IceCrystal");
 $.writeln("Using color scheme: " + palette.name);
 setBackgroundLayerWithGradient(document, palette.colors, {
     numColors: 3,
@@ -38,7 +38,7 @@ addLayer(document, "main");
 
 
 var THIRD_PI = Math.PI / 3;
-var MAX_DEPTH = 4;
+var MAX_DEPTH = 5;
 
 function hexagon(centerX, centerY, length) {
     var points = [];
