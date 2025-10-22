@@ -1,9 +1,7 @@
 (function() {
 
-    // Random utility functions
     function random(min, max) {
         if (typeof max === 'undefined') {
-            // random(max) - returns 0 to max
             max = min;
             min = 0;
         }
@@ -18,11 +16,8 @@
         return Math.floor(Math.random() * (max - min)) + min;
     }
 
-    // Array utility functions
-
-    // 配列のシャッフル
     function shuffleArray(array) {
-        var arr = array.slice(); // コピーを作成
+        var arr = array.slice();
         for (var i = arr.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var temp = arr[i];
@@ -32,7 +27,6 @@
         return arr;
     }
 
-    // 配列のリピート複製
     function repeatArray(array, repeatCount) {
         repeatCount = repeatCount || 3;
         var result = [];
@@ -44,7 +38,6 @@
         return result;
     }
 
-    // 配列からランダムに1つの要素を取得して返す関数
     function getRandomElementFromArray(array) {
         if (!array || array.length === 0) {
             return null;
@@ -53,7 +46,6 @@
         return array[randomIndex];
     }
 
-    // ランダムな偶数を取得
     function randomEvenInt(minNum, maxNum) {
         if (minNum % 2 !== 0) minNum++;
         if (maxNum % 2 !== 0) maxNum--;
@@ -62,7 +54,6 @@
         return randomEven;
     }
 
-    // ランダムな奇数を取得
     function randomOddInt(minNum, maxNum) {
         if (minNum % 2 === 0) minNum++;
         if (maxNum % 2 === 0) maxNum--;
@@ -71,7 +62,6 @@
         return randomOdd;
     }
 
-    // 整数numの約数を昇順で一覧と数を返す
     function divisor(num) {
         var results = [];
         var sqrt = Math.floor(Math.sqrt(num));
@@ -92,25 +82,21 @@
         };
     }
 
-    // 乱数が指定されたしきい値以下であるかどうかを判定する
     function isRandomBelowThreshold(threshold) {
         threshold = threshold || 0.1;
         return Math.random() < threshold;
     }
 
-    // 数を限定した配列を返す
     function getArrayWithLimitedLength(array, limit) {
         var maxLength = (typeof limit === 'undefined') ? array.length : Math.min(array.length, limit);
         return array.slice(0, maxLength);
     }
 
-    // 0から指定された上限値までの乱数による角度(ラジアン)を生成する
     function getRandomAngleInRadians(maxAngle) {
         maxAngle = maxAngle || (Math.PI * 2);
         return Math.random() * maxAngle;
     }
 
-    // 指定された数のステップから、ランダムな角度(ラジアン)を生成する
     function getRandomStepAngleInRadians(numSteps, minAngle, maxAngle) {
         minAngle = minAngle || 0;
         maxAngle = maxAngle || (Math.PI * 2);
@@ -128,19 +114,16 @@
         return minAngle + (randomStep * stepAngle);
     }
 
-    // 2点間の角度（ラジアン）を計算する関数
     function getAngleBetweenPoints(x1, y1, x2, y2) {
         return Math.atan2(y2 - y1, x2 - x1);
     }
 
-    // 配列の最後に指定した要素を追加し、配列の先頭と末尾を接続したような円形(循環)の配列を作成する関数
     function circularizeElements(array, element) {
         var circularArray = array.slice();
         circularArray.push(element);
         return circularArray;
     }
 
-    // 指定した数だけ元の配列の要素を繰り返し使用して新しい配列を生成する関数
     function assignCycleElements(array, count) {
         if (!array || array.length === 0) {
             return [];
@@ -153,7 +136,6 @@
         return result;
     }
 
-    // 指定した数だけ元の配列からランダムに要素を選択して新しい配列を生成する関数
     function assignRandomElements(array, count) {
         if (!array || array.length === 0) {
             return [];
@@ -166,7 +148,6 @@
         return result;
     }
 
-    // 重み付けされた確率に基づいて要素を選択し、指定した数だけ新しい配列を生成する関数
     function assignWeightedElements(array, weights, count) {
         if (!array || array.length === 0) {
             return [];
@@ -198,7 +179,6 @@
         return result;
     }
 
-    // 元の配列の要素をできるだけ均等に使用して、指定した数だけ新しい配列を生成する関数
     function assignBalancedElements(array, count) {
         if (!array || array.length === 0) {
             return [];
@@ -230,12 +210,10 @@
         return result;
     }
 
-    // 閾値に基づいて0または指定値をランダムに返す関数
     function getRandomBinary(threshold, value) {
         return (Math.random() > threshold) ? 0 : value;
     }
 
-    // 小さい値が出やすいランダム関数
     function skewed(min, max, exponent) {
         exponent = exponent || 2;
         var r = 1 - Math.random();
@@ -243,7 +221,6 @@
         return min + skew * (max - min);
     }
 
-    // 大きい値が出やすいランダム関数
     function skewedHigh(min, max, exponent) {
         exponent = exponent || 2;
         var r = Math.random();
@@ -251,29 +228,24 @@
         return min + skew * (max - min);
     }
 
-    // 整数バージョン
     function skewedInt(min, max, exponent) {
         return Math.floor(skewed(min, max + 0.999, exponent));
     }
 
-    // 大きい値が出やすい整数バージョン
     function skewedHighInt(min, max, exponent) {
         return Math.floor(skewedHigh(min, max + 0.999, exponent));
     }
 
-    // 三角分布（より単純なランダム分布）
     function triangular(min, max) {
         var r1 = random(min, max);
         var r2 = random(min, max);
         return Math.min(r1, r2);
     }
 
-    // 三角分布の整数バージョン
     function triangularInt(min, max) {
         return Math.floor(triangular(min, max + 0.999));
     }
 
-    // Box-Muller変換を使用したガウス分布
     function randomGaussian(mean, stdDev) {
         mean = mean || 0;
         stdDev = stdDev || 1;
@@ -284,7 +256,6 @@
         return z0 * stdDev + mean;
     }
 
-    // ガウス分布を使ったランダム関数
     function gaussian(min, max, skewFactor) {
         skewFactor = skewFactor || 0.3;
         var mean = min + (max - min) * skewFactor;
@@ -296,17 +267,14 @@
             attempts++;
         } while ((val < min || val > max) && attempts < 100);
 
-        // 100回試行しても範囲内に収まらない場合は、範囲内に制限
         return Math.max(min, Math.min(max, val));
     }
 
-    // ガウス分布の整数バージョン
     function gaussianInt(min, max, skewFactor) {
         return Math.floor(gaussian(min, max + 0.999, skewFactor));
     }
 
     $.global.UtilKit = {
-        // Random
         random: random,
         randomInt: randomInt,
         randomEvenInt: randomEvenInt,
@@ -323,7 +291,6 @@
         triangular: triangular,
         triangularInt: triangularInt,
 
-        // Array helpers
         shuffleArray: shuffleArray,
         repeatArray: repeatArray,
         getRandomElementFromArray: getRandomElementFromArray,
@@ -334,7 +301,6 @@
         assignWeightedElements: assignWeightedElements,
         assignBalancedElements: assignBalancedElements,
 
-        // Geometry / Math
         divisor: divisor,
         getRandomAngleInRadians: getRandomAngleInRadians,
         getRandomStepAngleInRadians: getRandomStepAngleInRadians,

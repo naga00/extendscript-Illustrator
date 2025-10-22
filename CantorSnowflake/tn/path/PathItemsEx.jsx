@@ -329,12 +329,6 @@
             PathItemsEx.prototype.setOpacity(alpha);
         };
 
-        /*
-        BlendModes.COLORBLEND, BlendModes.COLORBURN, BlendModes.COLORDODGE, BlendModes.DARKEN,
-        BlendModes.DIFFERENCE, BlendModes.EXCLUSION, BlendModes.HARDLIGHT, BlendModes.HUE,
-        BlendModes.LIGHTEN, BlendModes.LUMINOSITY, BlendModes.MULTIPLY, BlendModes.NORMAL, 
-        BlendModes.OVERLAY, BlendModes.SATURATIONBLEND, BlendModes.SCREEN, BlendModes.SOFTLIGHT
-        */
         PathItemsEx.prototype.setBlendMode = function(blendMode) {
             pathObj.blendingMode = blendMode;
         };
@@ -374,7 +368,7 @@
             nPathObj.anchor = [x0, y0];
             nPathObj.leftDirection = [x0, y0];
             nPathObj.rightDirection = [x0, y0];
-            nPathObj.pointType = (pointType != null) ? pointType : PointType.SMOOTH; /// SMOOTH, CORNER
+            nPathObj.pointType = (pointType != null) ? pointType : PointType.SMOOTH;
         };
 
         PathItemsEx.prototype.lineCurveTo = function(x0, y0, pointType) {
@@ -382,7 +376,7 @@
             nPathObj.anchor = [x0, y0];
             nPathObj.leftDirection = [x0, y0];
             nPathObj.rightDirection = [x0, y0];
-            nPathObj.pointType = (pointType != null) ? pointType : PointType.SMOOTH; /// SMOOTH, CORNER
+            nPathObj.pointType = (pointType != null) ? pointType : PointType.SMOOTH;
         };
 
         PathItemsEx.prototype.curveTo = function(x0, y0, x1, y1, pointType) {
@@ -390,7 +384,7 @@
             nPathObj.anchor = [x1, y1];
             nPathObj.leftDirection = [x0, y0];
             nPathObj.rightDirection = [x1, y1];
-            nPathObj.pointType = (pointType != null) ? pointType : PointType.SMOOTH; /// SMOOTH, CORNER
+            nPathObj.pointType = (pointType != null) ? pointType : PointType.SMOOTH;
         };
 
         PathItemsEx.prototype.curveMoveTo3 = function(x0, y0, x1, y1, x2, y2, pointType) {
@@ -399,7 +393,7 @@
             nPathObj.anchor = [x0, y0];
             nPathObj.leftDirection = [x1, y1];
             nPathObj.rightDirection = [x2, y2];
-            nPathObj.pointType = (pointType != null) ? pointType : PointType.SMOOTH; /// SMOOTH, CORNER
+            nPathObj.pointType = (pointType != null) ? pointType : PointType.SMOOTH;
         };
 
         PathItemsEx.prototype.curveTo3 = function(x0, y0, x1, y1, x2, y2, pointType) {
@@ -407,7 +401,7 @@
             nPathObj.anchor = [x0, y0];
             nPathObj.leftDirection = [x1, y1];
             nPathObj.rightDirection = [x2, y2];
-            nPathObj.pointType = (pointType != null) ? pointType : PointType.SMOOTH; /// SMOOTH, CORNER		
+            nPathObj.pointType = (pointType != null) ? pointType : PointType.SMOOTH;
         };
 
         PathItemsEx.prototype.drawDot = function(x, y, reversed) {
@@ -601,7 +595,7 @@
                 [x0, y0],
                 [x1, y1]
             ]);
-            pathObj.stroked = true; // 先にtrueを設定した後で線幅を指定しないとダメ
+            pathObj.stroked = true;
             pathObj.strokeWidth = (strokeWidth != null) ? strokeWidth : 1;
             if (strokeColor == null) {
                 strokeColor = new CMYKColor();
@@ -611,10 +605,9 @@
                 strokeColor.black = 0;
             }
             option.strokeColor = strokeColor;
-            pathObj.guides = true; // ガイドとして作成する
-            pathObj.locked = true; // ロックする
+            pathObj.guides = true;
+            pathObj.locked = true;
         };
-
     };
 
     $.global.PathItemsEx = PathItemsEx;

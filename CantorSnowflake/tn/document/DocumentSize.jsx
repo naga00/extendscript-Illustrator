@@ -40,6 +40,5 @@
         [181.42, 257.95]
     ];
 
-    // グローバルスコープに公開
     $.global.DocumentSize = DocumentSize;
 })();

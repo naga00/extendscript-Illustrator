@@ -3,10 +3,10 @@
         isNewDocument = (isNewDocument != undefined) ? isNewDocument : true;
         var doc;
         if (isNewDocument) {
-            doc = documents.addDocument(documentPreset.colorMode, documentPreset);
+            doc = app.documents.addDocument(documentPreset.colorMode, documentPreset);
         } else {
             if (app.documents.length > 0) {
-                doc = app.documents[0];
+                doc = app.activeDocument;
             } else {
                 doc = app.documents.addDocument(documentPreset.colorMode, documentPreset);
             }
@@ -15,37 +15,22 @@
         return doc;
     }
 
-    Document.prototype.addBackground = function(color) {
-        this.views[0].zoom = 1;
-        this.layers[0].name = "background";
+    function setBackgroundLayer(doc, color) {
+        doc.views[0].zoom = 1;
+        doc.layers[0].name = "background";
         var pathItemsEx = new PathItemsEx();
         pathItemsEx.setDefaultStrokeColor(color);
         pathItemsEx.setDefaultFillColor(color);
-        pathItemsEx.drawRect(0, activeDocument.height, activeDocument.width, activeDocument.height);
-        this.layers[0].locked = true;
+        pathItemsEx.drawRect(0, doc.height, doc.width, doc.height);
+        doc.layers[0].locked = true;
     }
 
-    Document.prototype.addBackgroundLayer = function() {
-        this.views[0].zoom = 1
-        this.layers[0].name = "background";
-    };
-
-    Document.prototype.removeBackgroundLayer = function() {
-        this.layers.remove("background");
-    };
-
-    Document.prototype.getLayer = function(name) {
-        return this.layers.getByName(name);
-    };
-
-    Document.prototype.addLayer = function(name) {
-        this.layers.add();
-        this.layers[0].name = name;
-    };
-
-    Document.prototype.removeLayer = function(name) {
-        this.layers.remove(name);
-    };
+    function addLayer(doc, name) {
+        doc.layers.add();
+        doc.layers[0].name = name;
+    }
 
     $.global.DocumentEx = DocumentEx;
+    $.global.setBackgroundLayer = setBackgroundLayer;
+    $.global.addLayer = addLayer;
 })();
