@@ -26,8 +26,8 @@ document.defaultStrokeJoin = StrokeJoin.MITERENDJOIN;
 document.defaultStrokeMiterLimit = 4;
 document.defaultStrokeWidth = 1;
 
-var palette = ColorKit.getRandomColorScheme();
-//var palette = ColorKit.getColorScheme("Hofmann");
+//var palette = ColorKit.getRandomColorScheme();
+var palette = ColorKit.getColorScheme("Afklint");
 $.writeln("Using color scheme: " + palette.name);
 setBackgroundLayer(document, RGBColor.ofHex("#f5f5f5")); //#f5f5f5, #0f0f0f
 
@@ -44,12 +44,12 @@ addLayer(document, "main");
 
 var pathItemsEx = new PathItemsEx();
 
-var depth = 6;
+var depth = 5;
 var hexagonCount = 0;
 
 // ランダム深さモード設定
 var randomDepthMode = true; // true: 各方向で異なる深さ, false: 通常の均等分割
-var depthVariation = 6; // 深さの変化量（0〜この値の範囲でランダムに減少）
+var depthVariation = 5; // 深さの変化量（0〜この値の範囲でランダムに減少）
 
 function drawHexaflake(level, maxLevels, x, y, side) {
     var degrees60 = Math.PI * 60 / 180;
@@ -94,11 +94,16 @@ function drawHexaflake(level, maxLevels, x, y, side) {
         angle = Math.PI / 6; // 角度をリセット
         
         var depthReductions = [];
-        if (randomDepthMode) {
+        if (level == maxLevels && randomDepthMode) {
+            var maxReduction = Math.min(level - 1, depthVariation);
             depthReductions.push(0);
-            depthReductions.push(level - 1);
+            depthReductions.push(maxReduction);
             for (var j = 0; j < 4; j++) {
-                depthReductions.push(Math.floor(Math.random() * (depthVariation + 1)));
+                if (maxReduction <= 1) {
+                    depthReductions.push(0);
+                } else {
+                    depthReductions.push(Math.floor(Math.random() * (maxReduction - 1)) + 1);
+                }
             }
             for (var j = depthReductions.length - 1; j > 0; j--) {
                 var k = Math.floor(Math.random() * (j + 1));
@@ -106,6 +111,9 @@ function drawHexaflake(level, maxLevels, x, y, side) {
                 depthReductions[j] = depthReductions[k];
                 depthReductions[k] = temp;
             }
+            $.writeln("=== Random Depth Mode ===");
+            $.writeln("Level: " + level + ", maxReduction: " + maxReduction);
+            $.writeln("Depth reductions: [" + depthReductions.join(", ") + "]");
         } else {
             for (var j = 0; j < 6; j++) {
                 depthReductions.push(0);
