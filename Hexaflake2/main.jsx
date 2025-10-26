@@ -1,0 +1,157 @@
+//@include "tn/system/VersionCheck.jsx";
+//@include "tn/system/System.jsx";
+//@include "tn/system/Capabilities.jsx";
+//@include "tn/document/DocumentEx.jsx";
+//@include "tn/util/UtilKit.jsx";
+//@include "tn/color/ColorKit.jsx";
+//@include "tn/path/PathItemsEx.jsx";
+//@include "tn/geom/PVector.jsx";
+
+
+var documentPreset = new DocumentPreset();
+documentPreset.title = "Sketch";
+documentPreset.width = 1000;
+documentPreset.height = 1000;
+documentPreset.colorMode = DocumentColorSpace.RGB;
+documentPreset.rasterResolution = DocumentRasterResolution.ScreenResolution;
+documentPreset.previewMode = DocumentPreviewMode.DefaultPreview;
+
+var document = new DocumentEx(false, documentPreset);
+document.defaultStroked = true;
+document.defaultFilled = true;
+document.defaultStrokeOverprint = false;
+document.defaultFillOverprint = false;
+document.defaultStrokeCap = StrokeCap.BUTTENDCAP;
+document.defaultStrokeJoin = StrokeJoin.MITERENDJOIN;
+document.defaultStrokeMiterLimit = 4;
+document.defaultStrokeWidth = 1;
+
+//var palette = ColorKit.getRandomColorScheme();
+var palette = ColorKit.getColorScheme("Afklint");
+$.writeln("Using color scheme: " + palette.name);
+setBackgroundLayer(document, RGBColor.ofHex("#f5f5f5")); //#f5f5f5, #0f0f0f
+
+/*
+setBackgroundLayerWithGradient(document, palette.colors, {
+    numColors: 2,
+    gradientType: GradientType.LINEAR,
+    randomAngle: false,
+    angle: 90
+});
+*/
+addLayer(document, "main");
+
+
+var pathItemsEx = new PathItemsEx();
+
+var depth = 5;
+var hexagonCount = 0;
+
+
+var randomDepthMode = true;
+var depthVariation = 5;
+
+function drawHexaflake(level, maxLevels, x, y, side) {
+    var degrees60 = Math.PI * 60 / 180;
+    var angle = Math.PI / 6;
+
+    if (level == 0) {
+        var pathItem = activeDocument.pathItems.add();
+        var points = [];
+        for (var i = 0; i < 6; i++) {
+            var currentX = x + Math.cos(angle) * side;
+            var currentY = y + Math.sin(angle) * side;
+            points.push([currentX, currentY]);
+            angle += degrees60;
+        }
+        pathItem.setEntirePath(points);
+        pathItem.closed = true;
+        pathItem.stroked = false;
+        pathItem.filled = true;
+        pathItem.strokeWidth = 0.5;
+        ColorKit.applyGradientWithOrigin(pathItem, palette.colors,
+            x, y, side, {
+                numColors: 3,
+                gradientType: GradientType.RADIAL,
+                randomAngle: true,
+                angle: 0
+            });
+
+        hexagonCount++;
+
+    } else {
+        var scaleFactor = 1 / 3;
+        var newSide = side * scaleFactor;
+        var distance = newSide * 2;
+        var depthReductions = [];
+        if (level == maxLevels && randomDepthMode) {
+            var maxReduction = Math.min(level - 1, depthVariation);
+            depthReductions.push(0);
+            depthReductions.push(maxReduction);
+            for (var j = 0; j < 5; j++) {
+                if (maxReduction <= 1) {
+                    depthReductions.push(0);
+                } else {
+                    depthReductions.push(Math.floor(Math.random() * (maxReduction - 1)) + 1);
+                }
+            }
+            for (var j = depthReductions.length - 1; j > 0; j--) {
+                var k = Math.floor(Math.random() * (j + 1));
+                var temp = depthReductions[j];
+                depthReductions[j] = depthReductions[k];
+                depthReductions[k] = temp;
+            }
+            $.writeln("=== Random Depth Mode ===");
+            $.writeln("Level: " + level + ", maxReduction: " + maxReduction);
+            $.writeln("Depth reductions: [" + depthReductions.join(", ") + "]");
+        } else {
+            for (var j = 0; j < 7; j++) {
+                depthReductions.push(0);
+            }
+        }
+
+        var centerDepthReduction = depthReductions[0];
+        var centerNextLevel = level - 1 - centerDepthReduction;
+        if (level == maxLevels) {
+            $.writeln("Center: reduction=" + centerDepthReduction + ", nextLevel=" + centerNextLevel);
+        }
+        if (centerNextLevel >= 0) {
+            drawHexaflake(centerNextLevel, maxLevels, x, y, newSide);
+        } else {
+            drawHexaflake(0, maxLevels, x, y, newSide);
+        }
+
+        angle = Math.PI / 6; // 角度をリセット
+        for (var i = 0; i < 6; i++) {
+            var nextX = x + Math.cos(angle) * distance;
+            var nextY = y + Math.sin(angle) * distance;
+            var depthReduction = depthReductions[i + 1]; // 配列の1〜6番目を使用
+            var nextLevel = level - 1 - depthReduction;
+            if (level == maxLevels) {
+                $.writeln("Surrounding[" + i + "]: reduction=" + depthReduction + ", nextLevel=" + nextLevel);
+            }
+            if (nextLevel >= 0) {
+                drawHexaflake(nextLevel, maxLevels, nextX, nextY, newSide);
+            } else {
+                drawHexaflake(0, maxLevels, nextX, nextY, newSide);
+            }
+            angle += degrees60;
+        }
+
+    }
+}
+
+var margin = 0;
+var w = documentPreset.width;
+var h = documentPreset.height;
+var radius = w / 2 - 2 * margin;
+var side = radius * 0.97;
+
+$.writeln("Starting Hexaflake with depth: " + depth);
+
+var startX = w / 2;
+var startY = h / 2;
+drawHexaflake(depth, depth, startX, startY, side);
+$.writeln("Total hexagons drawn: " + hexagonCount);
+
+app.redraw();
